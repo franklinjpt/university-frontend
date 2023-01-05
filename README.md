@@ -2,6 +2,10 @@
 ---
 This project is a client for the REST API about students choosing subjects
 
+## Development status
+---
+This project is still in development
+
 ## Instructions
 ---
 This Project is made in React, so it's necessary to have node and npm installed in your computer.

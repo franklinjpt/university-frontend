@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HeaderComponent from './components/HeaderComponent';
+import AppBar from "./components/AppBar.jsx";
+import TableMenu from "./components/TableMenu.jsx";
 import './App.css'
 
 function App() {
@@ -8,11 +8,8 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <HeaderComponent />
-        <Routes>
-        </Routes>
-      </BrowserRouter>
+        <AppBar />
+        <TableMenu />
     </div>
   )
 }
