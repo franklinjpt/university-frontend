@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,9 +12,11 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Student', 'Professor', 'Subject'];
+const pages = ['Home','Student', 'Professor', 'Subject'];
 
 function ResponsiveAppBar() {
+    const navigateTo = useNavigate();
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
@@ -22,6 +25,16 @@ function ResponsiveAppBar() {
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
+    };
+
+    const handleMenuItemClick = (page) => {
+        handleCloseNavMenu();
+        if (page === 'Home') {
+            navigateTo('/');
+        } else {
+            navigateTo('/' + page.toLowerCase());
+        }
+
     };
 
     return (
@@ -58,7 +71,7 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={() => handleMenuItemClick(page)}>
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -87,7 +100,7 @@ function ResponsiveAppBar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                onClick={() => handleMenuItemClick(page)}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 {page}
