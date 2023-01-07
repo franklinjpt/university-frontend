@@ -4,6 +4,11 @@
   margin: 0;
 }
 
-html {
-  background-color: #DAF7A6;
+.labelSize {
+  width: 125px;
 }
+
+/*.table-wrapper {*/
+/*  max-height: 400px;*/
+/*  overflow-y: auto;*/
+/*}*/
