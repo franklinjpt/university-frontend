@@ -141,6 +141,9 @@ const EditEntity = () => {
                     <button type="submit" className="btn btn-warning mt-3 mb-3">
                         Edit
                     </button>
+                    <button className="btn btn-danger ms-2 mt-3 mb-3" onClick={() => navigateTo("/"+location.state.entity)}>
+                        Cancel
+                    </button>
                 </div>
             </form>
         </div>

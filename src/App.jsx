@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AddEntity from "./pages/AddEntity.jsx";
 import NavBar from "./components/NavBar.jsx";
 import EditEntity from "./pages/EditEntity.jsx";
+import ViewEntity from "./pages/ViewEntity.jsx";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
                 <Route exact path="/subject" element={<Subject/>}/>
                 <Route exact path="/addentity" element={<AddEntity/>}/>
                 <Route exact path="/editentity/" element={<EditEntity/>}/>
+                <Route exact path="/viewentity" element={<ViewEntity/>}/>
             </Routes>
         </BrowserRouter>
     </div>

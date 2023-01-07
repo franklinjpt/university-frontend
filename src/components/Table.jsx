@@ -36,11 +36,9 @@ const DisplayTable = (props) => {
 
     return (
         <div className="table-responsive">
-            <table className="table table-striped table-sm caption-top">
-                <caption>List of {props.entity + 's'}</caption>
+            <table className="table table-striped table-sm">
                 <thead className="table-dark">
                 <tr>
-                    {props.entity === 'subject' ? <th scope="col">Id</th> : null}
                     {Object.keys(props.dataFields).map((key, index) => {
                         return <th key={index}>{props.dataFields[key]}</th>
                     })}
@@ -50,14 +48,14 @@ const DisplayTable = (props) => {
                 <tbody>
                 {data.map((item, index) => (
                     <tr key={index}>
-                        {props.entity === 'subject' ? <td>{item.id}</td> : null}
                         {Object.keys(props.dataFields).map((key, index) => {
                             return <td key={index}>{item[key]}</td>
                         })}
 
                         <td>
                             <button className="btn btn-warning me-1" onClick={() => navigateTo('/editentity', {state: {entity: props.entity, data: props.dataFields, id: item.id}})}>Edit</button>
-                            <button className="btn btn-danger" onClick={() => deleteClick(item.id) }>Delete</button>
+                            <button className="btn btn-danger me-1" onClick={() => deleteClick(item.id) }>Delete</button>
+                            <button className="btn btn-primary" onClick={() => navigateTo('/viewentity', {state: {entity: props.entity, data: Object.values(props.dataFields), id: item.id}})}>View</button>
                         </td>
                     </tr>
                 ))}

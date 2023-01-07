@@ -8,7 +8,7 @@
   width: 125px;
 }
 
-/*.table-wrapper {*/
-/*  max-height: 400px;*/
-/*  overflow-y: auto;*/
-/*}*/
+.listSize {
+  width: 85%;
+  margin: auto;
+}
