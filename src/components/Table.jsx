@@ -23,6 +23,17 @@ const DisplayTable = (props) => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error!</p>;
 
+    const deleteClick = (id) => {
+        axios.delete(props.apiUrl + '/' + id)
+            .then(res => {
+                setData(data.filter(item => item.id !== id));
+                alert('Deleted successfully!');
+            })
+            .catch(error => {
+                alert('Status: ' + error.request.status +' - Error deleting! ' + error.request.response );
+            });
+    }
+
     return (
         <div className="table-responsive">
             <table className="table table-striped table-sm caption-top">
@@ -45,7 +56,8 @@ const DisplayTable = (props) => {
                         })}
 
                         <td>
-                            <button className="btn btn-warning" onClick={() => navigateTo('/editentity', {state: {entity: props.entity, data: props.dataFields, id: item.id}})}>Edit</button>
+                            <button className="btn btn-warning me-1" onClick={() => navigateTo('/editentity', {state: {entity: props.entity, data: props.dataFields, id: item.id}})}>Edit</button>
+                            <button className="btn btn-danger" onClick={() => deleteClick(item.id) }>Delete</button>
                         </td>
                     </tr>
                 ))}
