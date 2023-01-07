@@ -1,117 +1,57 @@
 import * as React from 'react';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-export class DisplayTable extends React.Component {
+const DisplayTable = (props) => {
+    const navigateTo = useNavigate();
+    const [data, setData] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-        }
-    }
-
-    componentDidMount() {
-        axios.get(this.props.apiUrl)
+    React.useEffect(() => {
+        axios.get(props.apiUrl)
             .then(res => {
-                const data = res.data;
-                this.setState({ data });
+                setData(res.data);
+                setLoading(false);
             })
-    }
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
 
-    deleteClick = (id) => {
-        axios.delete(this.props.apiUrl + '/' + id)
-            .then(res => {
-                this.setState({ data: this.state.data.filter(item => item.id !== id) });
-            })
-    }
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error!</p>;
 
-    render() {
-        const { data } = this.state;
-        return (
-            <div className="table-wrapper">
-                <table className="table table-hover caption-top" >
-                    <caption>List of {this.props.entity + 's'}</caption>
-                    <thead className="table-dark">
-                    <tr>
-                        <th>Id</th>
-                        {this.props.entity === 'student' ? (
-                            <>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Faculty Name</th>
-                                <th>Address</th>
-                                <th>Email</th>
-                                <th>Year</th>
-                            </>
-                        ) : (this.props.entity === 'professor' ? (
-                            <>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Faculty Name</th>
-                                <th>Address</th>
-                                <th>Email</th>
-                                <th>Cellphone</th>
-                            </>
-                        ) : (
-                            <>
-                                <th>Name</th>
-                                <th>Credits</th>
-                            </>
-                        ))}
-                        <th>Actions</th>
+    return (
+        <div className="table-responsive">
+            <table className="table table-striped table-sm caption-top">
+                <caption>List of {props.entity + 's'}</caption>
+                <thead className="table-dark">
+                <tr>
+                    {props.entity === 'subject' ? <th scope="col">Id</th> : null}
+                    {Object.keys(props.dataFields).map((key, index) => {
+                        return <th key={index}>{props.dataFields[key]}</th>
+                    })}
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {data.map((item, index) => (
+                    <tr key={index}>
+                        {props.entity === 'subject' ? <td>{item.id}</td> : null}
+                        {Object.keys(props.dataFields).map((key, index) => {
+                            return <td key={index}>{item[key]}</td>
+                        })}
+
+                        <td>
+                            <button className="btn btn-warning" onClick={() => navigateTo('/editentity', {state: {entity: props.entity, data: props.dataFields, id: item.id}})}>Edit</button>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody className="table-group-divider">
-                    {this.props.entity === 'student' ? (
-                        <>
-                            {data.map((row) => (
-                                <tr key={row.id} >
-                                    <td>{row.id}</td>
-                                    <td>{row.firstName}</td>
-                                    <td>{row.lastName}</td>
-                                    <td>{row.facultyName}</td>
-                                    <td>{row.address}</td>
-                                    <td>{row.email}</td>
-                                    <td>{row.numberYear}</td>
-                                    <td>
-                                        <button className="btn btn-danger" onClick={() => this.deleteClick(row.id)}>Delete</button>
-                                    </td>
-                                </tr>))}
-                        </>
-                    ) : (this.props.entity === 'professor' ? (
-                        <>
-                            {data.map((row) => (
-                                <tr key={row.id} >
-                                    <td>{row.id}</td>
-                                    <td>{row.firstName}</td>
-                                    <td>{row.lastName}</td>
-                                    <td>{row.facultyName}</td>
-                                    <td>{row.address}</td>
-                                    <td>{row.email}</td>
-                                    <td>{row.cellphone}</td>
-                                    <td>
-                                        <button className="btn btn-danger" onClick={() => this.deleteClick(row.id)}>Delete</button>
-                                    </td>
-                                </tr>))}
-                        </>
-                    ) : (
-                        <>
-                            {data.map((row) => (
-                                <tr key={row.id} >
-                                    <td>{row.id}</td>
-                                    <td>{row.name}</td>
-                                    <td>{row.credits}</td>
-                                    <td>
-                                        <button className="btn btn-danger" onClick={() => this.deleteClick(row.id)}>Delete</button>
-                                    </td>
-                                </tr>))}
-                        </>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    }
+                ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
-
 export default DisplayTable;

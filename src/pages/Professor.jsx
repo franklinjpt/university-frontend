@@ -15,7 +15,7 @@ const Professor = () => {
     return (
         <div className="ps-3 pe-3">
             <Add entity="professor" data={data}/>
-            <Table apiUrl="http://localhost:8080/university/api/professor" entity="professor"/>
+            <Table apiUrl="http://localhost:8080/university/api/professor" entity="professor" dataFields={data}/>
         </div>
     )
 }

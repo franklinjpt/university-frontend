@@ -1,12 +1,14 @@
+import * as React from "react";
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 
-const AddEntity = () => {
+const EditEntity = () => {
     const navigateTo = useNavigate();
     const location = useLocation();
     const dataFields = location.state.data;
+
     const [data, setData] = useState({
         id: '',
         firstName: '',
@@ -20,6 +22,17 @@ const AddEntity = () => {
         credits: '',
     });
 
+    React.useEffect(() => {
+        axios.get('http://localhost:8080/university/api/' + location.state.entity + '/' + location.state.id)
+            .then(res => {
+                setData(res.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+
     const handleChange = (event) => {
         const {name, value} = event.target;
         setData({...data, [name]: value});
@@ -29,7 +42,6 @@ const AddEntity = () => {
         event.preventDefault();
 
         if (location.state.entity === "student") {
-            // console.log(data);
             const newStudent = {
                 id: data.id.trim(),
                 firstName: data.firstName.trim(),
@@ -37,14 +49,14 @@ const AddEntity = () => {
                 facultyName: data.facultyName.trim(),
                 address: data.address.trim(),
                 email: data.email.trim(),
-                numberYear: data.numberYear.trim() || 1
+                numberYear: data.numberYear || 1
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
                 alert('Please fill all the required fields!');
             } else {
-                axios.post('http://localhost:8080/university/api/student', newStudent)
+                axios.put('http://localhost:8080/university/api/student', newStudent)
                     .then(res => {
-                        alert('Student created successfully!');
+                        alert('Student edited successfully!');
                         navigateTo('/student');
                     })
                     .catch(error => {
@@ -64,9 +76,9 @@ const AddEntity = () => {
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
                 alert('Please fill all the required fields!');
             } else {
-                axios.post('http://localhost:8080/university/api/professor', newProfessor)
+                axios.put('http://localhost:8080/university/api/professor', newProfessor)
                     .then(res => {
-                        alert('Professor created successfully!');
+                        alert('Professor edited successfully!');
                         navigateTo('/professor');
                     })
                     .catch(error => {
@@ -75,18 +87,20 @@ const AddEntity = () => {
             }
         } else if (location.state.entity === "subject") {
             const newSubject = {
-                name: data.name,
+                id: data.id,
+                name: data.name.trim(),
                 credits: data.credits || 1
             };
             if (data.name === '') {
                 alert('Please fill all the required fields!');
             } else {
-                axios.post('http://localhost:8080/university/api/subject', newSubject)
+                axios.put('http://localhost:8080/university/api/subject', newSubject)
                     .then(res => {
-                        alert('Subject created successfully!');
+                        alert('Subject Edited successfully!');
                         navigateTo('/subject');
                     })
                     .catch(error => {
+                        console.log(newSubject);
                         alert('Status: ' + error.request.status +' - Error creating subject! ' + error.request.response );
                     });
             }
@@ -103,24 +117,34 @@ const AddEntity = () => {
             <form className="text-start ps-3 pe-3" onSubmit={handleSubmit} >
 
                 {Object.keys(dataFields).map((key, index) => {
-                    return (
-                        <div className="input-group flex-nowrap mb-3" key={index}>
-                            <label htmlFor={key} className="input-group-text labelSize">{dataFields[key]} {requires.includes(key) ? <span className="text-danger">*</span> : null} </label>
-                            <input type={numbers.includes(key) ? 'number' : 'text'} className="form-control" placeholder={dataFields[key]} id={key}
-                                   name={key}  value={data[key]} onChange={handleChange}/>
-                        </div>
-                    )
+                    {if(key === 'id') {
+                        return (
+                            <div key={index} className="input-group flex-nowrap mb-3">
+                                <label htmlFor={key} className="input-group-text labelSize">{dataFields[key]}</label>
+                                <input type="text" className="form-control" id={key} name={key} value={data[key]} onChange={handleChange} disabled/>
+                            </div>
+                        )
+                    }else {
+                        return (
+                            <div className="input-group flex-nowrap mb-3" key={index}>
+                                <label htmlFor={key} className="input-group-text labelSize">{dataFields[key]} {requires.includes(key) ? <span className="text-danger">*</span> : null} </label>
+                                <input type={numbers.includes(key) ? 'number' : 'text'} className="form-control" placeholder={dataFields[key]} id={key}
+                                       name={key}  value={data[key]} onChange={handleChange}  />
+                            </div>
+                        )
+                    }}
+
                 })}
 
 
-                 <div className="text-center">
-                     <button type="submit" className="btn btn-primary mt-3 mb-3">
-                         Submit
-                     </button>
-                 </div>
+                <div className="text-center">
+                    <button type="submit" className="btn btn-warning mt-3 mb-3">
+                        Edit
+                    </button>
+                </div>
             </form>
         </div>
     )
 }
 
-export default AddEntity;
+export default EditEntity;
