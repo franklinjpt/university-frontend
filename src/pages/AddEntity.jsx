@@ -1,13 +1,10 @@
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
-<<<<<<< Updated upstream
-=======
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
->>>>>>> Stashed changes
 
 
 const AddEntity = () => {
@@ -37,10 +34,6 @@ const AddEntity = () => {
         event.preventDefault();
 
         if (entity === "student") {
-<<<<<<< Updated upstream
-            // console.log(data);
-=======
->>>>>>> Stashed changes
             const newStudent = {
                 id: data.id.trim(),
                 firstName: data.firstName.trim(),
@@ -51,17 +44,6 @@ const AddEntity = () => {
                 numberYear: data.numberYear.trim() || 1
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
-<<<<<<< Updated upstream
-                alert('Please fill all the required fields!');
-            } else {
-                axios.post('http://localhost:8080/university/api/student', newStudent)
-                    .then(() => {
-                        alert('Student created successfully!');
-                        navigateTo('/student');
-                    })
-                    .catch(error => {
-                        alert('Status: ' + error.request.status +' - Error creating student! ' + error.request.response );
-=======
                 MySwal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -84,7 +66,6 @@ const AddEntity = () => {
                             title: 'Oops...',
                             text: 'Student already exists!'
                         })
->>>>>>> Stashed changes
                     });
             }
         } else if (entity === "professor") {
@@ -98,17 +79,6 @@ const AddEntity = () => {
                 cellphone: data.cellphone.trim()
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
-<<<<<<< Updated upstream
-                alert('Please fill all the required fields!');
-            } else {
-                axios.post('http://localhost:8080/university/api/professor', newProfessor)
-                    .then(() => {
-                        alert('Professor created successfully!');
-                        navigateTo('/professor');
-                    })
-                    .catch(error => {
-                        alert('Status: ' + error.request.status +' - Error creating professor! ' + error.request.response );
-=======
                 MySwal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -131,7 +101,6 @@ const AddEntity = () => {
                             title: 'Oops...',
                             text: 'Professor already exists!'
                         })
->>>>>>> Stashed changes
                     });
             }
         } else if (entity === "subject") {
@@ -140,17 +109,6 @@ const AddEntity = () => {
                 credits: data.credits || 1
             };
             if (data.name === '') {
-<<<<<<< Updated upstream
-                alert('Please fill all the required fields!');
-            } else {
-                axios.post('http://localhost:8080/university/api/subject', newSubject)
-                    .then(() => {
-                        alert('Subject created successfully!');
-                        navigateTo('/subject');
-                    })
-                    .catch(error => {
-                        alert('Status: ' + error.request.status +' - Error creating subject! ' + error.request.response );
-=======
                 MySwal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -173,7 +131,6 @@ const AddEntity = () => {
                             title: 'Oops...',
                             text: 'Subject already exists!'
                         })
->>>>>>> Stashed changes
                     });
             }
         }

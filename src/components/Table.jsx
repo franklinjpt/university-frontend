@@ -1,13 +1,10 @@
 import * as React from 'react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-<<<<<<< Updated upstream
-=======
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
->>>>>>> Stashed changes
 
 const DisplayTable = (props) => {
     const navigateTo = useNavigate();
@@ -34,12 +31,6 @@ const DisplayTable = (props) => {
         axios.delete(props.apiUrl + '/' + id)
             .then(res => {
                 setData(data.filter(item => item.id !== id));
-<<<<<<< Updated upstream
-                alert('Deleted successfully!');
-            })
-            .catch(error => {
-                alert('Status: ' + error.request.status +' - Error deleting! ' + error.request.response );
-=======
                 MySwal.fire({
                     icon: 'success',
                     title: 'Success!',
@@ -52,7 +43,6 @@ const DisplayTable = (props) => {
                     title: 'Oops...',
                     text: 'Something went wrong!'
                 })
->>>>>>> Stashed changes
             });
     }
 

@@ -4,7 +4,7 @@ This project is a client for the REST API about students choosing subjects
 
 ## Development status
 ---
-This project is still in development
+This project is completed
 
 ## Instructions
 ---
