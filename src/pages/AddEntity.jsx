@@ -1,6 +1,13 @@
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
+<<<<<<< Updated upstream
+=======
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
+>>>>>>> Stashed changes
 
 
 const AddEntity = () => {
@@ -30,7 +37,10 @@ const AddEntity = () => {
         event.preventDefault();
 
         if (entity === "student") {
+<<<<<<< Updated upstream
             // console.log(data);
+=======
+>>>>>>> Stashed changes
             const newStudent = {
                 id: data.id.trim(),
                 firstName: data.firstName.trim(),
@@ -41,6 +51,7 @@ const AddEntity = () => {
                 numberYear: data.numberYear.trim() || 1
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+<<<<<<< Updated upstream
                 alert('Please fill all the required fields!');
             } else {
                 axios.post('http://localhost:8080/university/api/student', newStudent)
@@ -50,6 +61,30 @@ const AddEntity = () => {
                     })
                     .catch(error => {
                         alert('Status: ' + error.request.status +' - Error creating student! ' + error.request.response );
+=======
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the fields!'
+                })
+            } else {
+                axios.post('http://localhost:8080/university/api/student', newStudent)
+                    .then(() => {
+                        MySwal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Student added successfully!'
+                        }).then(() => {
+                            navigateTo('/student');
+                        })
+                    })
+                    .catch(error => {
+                        MySwal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Student already exists!'
+                        })
+>>>>>>> Stashed changes
                     });
             }
         } else if (entity === "professor") {
@@ -63,6 +98,7 @@ const AddEntity = () => {
                 cellphone: data.cellphone.trim()
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+<<<<<<< Updated upstream
                 alert('Please fill all the required fields!');
             } else {
                 axios.post('http://localhost:8080/university/api/professor', newProfessor)
@@ -72,6 +108,30 @@ const AddEntity = () => {
                     })
                     .catch(error => {
                         alert('Status: ' + error.request.status +' - Error creating professor! ' + error.request.response );
+=======
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the fields!'
+                })
+            } else {
+                axios.post('http://localhost:8080/university/api/professor', newProfessor)
+                    .then(() => {
+                        MySwal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Professor added successfully!'
+                        }).then(() => {
+                            navigateTo('/professor');
+                        })
+                    })
+                    .catch(error => {
+                        MySwal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Professor already exists!'
+                        })
+>>>>>>> Stashed changes
                     });
             }
         } else if (entity === "subject") {
@@ -80,6 +140,7 @@ const AddEntity = () => {
                 credits: data.credits || 1
             };
             if (data.name === '') {
+<<<<<<< Updated upstream
                 alert('Please fill all the required fields!');
             } else {
                 axios.post('http://localhost:8080/university/api/subject', newSubject)
@@ -89,6 +150,30 @@ const AddEntity = () => {
                     })
                     .catch(error => {
                         alert('Status: ' + error.request.status +' - Error creating subject! ' + error.request.response );
+=======
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the fields!'
+                })
+            } else {
+                axios.post('http://localhost:8080/university/api/subject', newSubject)
+                    .then(() => {
+                        MySwal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Subject added successfully!'
+                        }).then(() => {
+                            navigateTo('/subject');
+                        })
+                    })
+                    .catch(error => {
+                        MySwal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Subject already exists!'
+                        })
+>>>>>>> Stashed changes
                     });
             }
         }

@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import {useLocation} from "react-router-dom";
+<<<<<<< Updated upstream
 import axios from "axios";
 import Modal from 'react-modal';
 import Swal from 'sweetalert2'
@@ -16,6 +17,17 @@ const customStyles = {
     }
 };
 
+=======
+import ModalStudent from "../components/ModalStudent";
+import ModalProfessor from "../components/ModalProfessor";
+import ListOfSubjectsAdded from "../components/ListOfSubjectsAdded.jsx";
+import ListOfStudentsAdded from "../components/ListOfStudentsAdded.jsx";
+import ListOfProfessorsAdded from "../components/ListOfProfessorsAdded.jsx";
+import axios from "axios";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+>>>>>>> Stashed changes
 const MySwal = withReactContent(Swal)
 
 const ViewEntity = () => {
@@ -37,7 +49,10 @@ const ViewEntity = () => {
 
     const [data, setData] = React.useState({});
     const [dataSubject, setDataSubject] = React.useState({});
+<<<<<<< Updated upstream
     const [allSubjects, setAllSubjects] = React.useState([]);
+=======
+>>>>>>> Stashed changes
 
     React.useEffect(() => {
         axios.get('http://localhost:8080/university/api/' + entity + '/' + idEntity)
@@ -54,6 +69,7 @@ const ViewEntity = () => {
             .catch(error => {
                 console.log(error);
             });
+<<<<<<< Updated upstream
         axios.get('http://localhost:8080/university/api/subject')
             .then(res => {
                 setAllSubjects(res.data);
@@ -61,6 +77,8 @@ const ViewEntity = () => {
             .catch(error => {
                 console.log(error);
             });
+=======
+>>>>>>> Stashed changes
     },[]);
 
     const calculateCredits = () => {
@@ -76,6 +94,7 @@ const ViewEntity = () => {
     return (
         <div id="view">
             <div>
+<<<<<<< Updated upstream
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={closeModal}
@@ -170,6 +189,19 @@ const ViewEntity = () => {
                     </table>
                 </Modal>
 
+=======
+                {entity === "student" ? (
+                    <ModalStudent modalIsOpen={modalIsOpen} closeModal={closeModal}
+                                  calculateCredits={calculateCredits} idEntity={idEntity}
+                                  dataSubject={dataSubject} setDataSubject={setDataSubject}
+                    />
+                ) : entity === "professor" ? (
+                    <ModalProfessor modalIsOpen={modalIsOpen} closeModal={closeModal}
+                                    idEntity={idEntity} dataSubject={dataSubject}
+                                    setDataSubject={setDataSubject}
+                    />
+                ) : null}
+>>>>>>> Stashed changes
             </div>
             <div className="container border border-1 mt-4 mb-4 w-50 text-center">
                 <h2>{entity.charAt(0).toUpperCase() + entity.slice(1)}</h2>
@@ -184,6 +216,7 @@ const ViewEntity = () => {
                     })}
                 </div>
             </div>
+<<<<<<< Updated upstream
             <div className="container border border-1 mt-4 mb-4 w-50 text-center">
                 <h2>List of subjects added</h2>
                 <div className="text-start d-flex justify-content-between">
@@ -207,6 +240,17 @@ const ViewEntity = () => {
 
                 </div>
             </div>
+=======
+
+            {entity !== "subject" ? (
+                <ListOfSubjectsAdded openModal={openModal} calculateCredits={calculateCredits} dataSubject={dataSubject}/>
+            ) : (
+                <div>
+                    <ListOfStudentsAdded openModal={openModal} idEntity={idEntity}/>
+                    <ListOfProfessorsAdded openModal={openModal} idEntity={idEntity}/>
+                </div>
+            )}
+>>>>>>> Stashed changes
         </div>);
 }
 export default ViewEntity;

@@ -2,7 +2,14 @@ import * as React from "react";
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
+<<<<<<< Updated upstream
 
+=======
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
+>>>>>>> Stashed changes
 
 const EditEntity = () => {
     const navigateTo = useNavigate();
@@ -52,6 +59,7 @@ const EditEntity = () => {
                 numberYear: data.numberYear || 1
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+<<<<<<< Updated upstream
                 alert('Please fill all the required fields!');
             } else {
                 axios.put('http://localhost:8080/university/api/student', newStudent)
@@ -61,6 +69,30 @@ const EditEntity = () => {
                     })
                     .catch(error => {
                         alert('Status: ' + error.request.status +' - Error creating student! ' + error.request.response );
+=======
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the fields!'
+                })
+            } else {
+                axios.put('http://localhost:8080/university/api/student', newStudent)
+                    .then(()=> {
+                        MySwal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Student updated successfully!'
+                        }).then(() => {
+                            navigateTo('/student');
+                        });
+                    })
+                    .catch(error => {
+                        MySwal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!'
+                        })
+>>>>>>> Stashed changes
                     });
             }
         } else if (location.state.entity === "professor") {
@@ -74,6 +106,7 @@ const EditEntity = () => {
                 cellphone: data.cellphone.trim()
             };
             if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+<<<<<<< Updated upstream
                 alert('Please fill all the required fields!');
             } else {
                 axios.put('http://localhost:8080/university/api/professor', newProfessor)
@@ -83,6 +116,30 @@ const EditEntity = () => {
                     })
                     .catch(error => {
                         alert('Status: ' + error.request.status +' - Error creating professor! ' + error.request.response );
+=======
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the fields!'
+                })
+            } else {
+                axios.put('http://localhost:8080/university/api/professor', newProfessor)
+                    .then(() => {
+                        MySwal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Professor updated successfully!'
+                        }).then(() => {
+                            navigateTo('/professor');
+                        });
+                    })
+                    .catch(error => {
+                        MySwal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!'
+                        })
+>>>>>>> Stashed changes
                     });
             }
         } else if (location.state.entity === "subject") {
@@ -92,6 +149,7 @@ const EditEntity = () => {
                 credits: data.credits || 1
             };
             if (data.name === '') {
+<<<<<<< Updated upstream
                 alert('Please fill all the required fields!');
             } else {
                 axios.put('http://localhost:8080/university/api/subject', newSubject)
@@ -102,6 +160,30 @@ const EditEntity = () => {
                     .catch(error => {
                         console.log(newSubject);
                         alert('Status: ' + error.request.status +' - Error creating subject! ' + error.request.response );
+=======
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the fields!'
+                })
+            } else {
+                axios.put('http://localhost:8080/university/api/subject', newSubject)
+                    .then(() => {
+                        MySwal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Subject updated successfully!'
+                        }).then(() => {
+                            navigateTo('/subject');
+                        });
+                    })
+                    .catch(error => {
+                        MySwal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!'
+                        })
+>>>>>>> Stashed changes
                     });
             }
         }
