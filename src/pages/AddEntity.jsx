@@ -7,6 +7,7 @@ const AddEntity = () => {
     const navigateTo = useNavigate();
     const location = useLocation();
     const dataFields = location.state.data;
+    const entity = location.state.entity;
     const [data, setData] = useState({
         id: '',
         firstName: '',
@@ -28,7 +29,7 @@ const AddEntity = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (location.state.entity === "student") {
+        if (entity === "student") {
             // console.log(data);
             const newStudent = {
                 id: data.id.trim(),
@@ -43,7 +44,7 @@ const AddEntity = () => {
                 alert('Please fill all the required fields!');
             } else {
                 axios.post('http://localhost:8080/university/api/student', newStudent)
-                    .then(res => {
+                    .then(() => {
                         alert('Student created successfully!');
                         navigateTo('/student');
                     })
@@ -51,7 +52,7 @@ const AddEntity = () => {
                         alert('Status: ' + error.request.status +' - Error creating student! ' + error.request.response );
                     });
             }
-        } else if (location.state.entity === "professor") {
+        } else if (entity === "professor") {
             const newProfessor = {
                 id: data.id.trim(),
                 firstName: data.firstName.trim(),
@@ -65,7 +66,7 @@ const AddEntity = () => {
                 alert('Please fill all the required fields!');
             } else {
                 axios.post('http://localhost:8080/university/api/professor', newProfessor)
-                    .then(res => {
+                    .then(() => {
                         alert('Professor created successfully!');
                         navigateTo('/professor');
                     })
@@ -73,7 +74,7 @@ const AddEntity = () => {
                         alert('Status: ' + error.request.status +' - Error creating professor! ' + error.request.response );
                     });
             }
-        } else if (location.state.entity === "subject") {
+        } else if (entity === "subject") {
             const newSubject = {
                 name: data.name,
                 credits: data.credits || 1
@@ -82,7 +83,7 @@ const AddEntity = () => {
                 alert('Please fill all the required fields!');
             } else {
                 axios.post('http://localhost:8080/university/api/subject', newSubject)
-                    .then(res => {
+                    .then(() => {
                         alert('Subject created successfully!');
                         navigateTo('/subject');
                     })
@@ -95,29 +96,39 @@ const AddEntity = () => {
 
     const requires = ['id', 'firstName', 'lastName', 'facultyName', 'name', 'credits'];
     const numbers = ['numberYear', 'credits'];
-
     return (
+
         <div className="container border border-1 mt-4 mb-4 w-50 text-center">
-            <h1>Add {location.state.entity}</h1>
+            <h1>Add {entity}</h1>
             <p className="text-danger">* Required</p>
             <form className="text-start ps-3 pe-3" onSubmit={handleSubmit} >
 
-                {Object.keys(dataFields).map((key, index) => {
-                    return (
-                        <div className="input-group flex-nowrap mb-3" key={index}>
-                            <label htmlFor={key} className="input-group-text labelSize">{dataFields[key]} {requires.includes(key) ? <span className="text-danger">*</span> : null} </label>
-                            <input type={numbers.includes(key) ? 'number' : 'text'} className="form-control" placeholder={dataFields[key]} id={key}
-                                   name={key}  value={data[key]} onChange={handleChange}/>
-                        </div>
-                    )
-                })}
-
+                {entity === "subject"
+                    ? Object.keys(dataFields).slice(1).map((key, index) => {
+                        return (
+                            <div className="input-group flex-nowrap mb-3" key={index}>
+                                <label htmlFor={key} className="input-group-text labelSize">{dataFields[key]} {requires.includes(key) ? <span className="text-danger">*</span> : null} </label>
+                                <input type={numbers.includes(key) ? 'number' : 'text'} className="form-control" placeholder={dataFields[key]} id={key}
+                                       name={key}  value={data[key]} onChange={handleChange}/>
+                            </div>
+                        )
+                    })
+                    : Object.keys(dataFields).map((key, index) => {
+                        return (
+                            <div className="input-group flex-nowrap mb-3" key={index}>
+                                <label htmlFor={key} className="input-group-text labelSize">{dataFields[key]} {requires.includes(key) ? <span className="text-danger">*</span> : null} </label>
+                                <input type={numbers.includes(key) ? 'number' : 'text'} className="form-control" placeholder={dataFields[key]} id={key}
+                                       name={key}  value={data[key]} onChange={handleChange}/>
+                            </div>
+                        )
+                    })
+                }
 
                  <div className="text-center">
                      <button type="submit" className="btn btn-primary mt-3 mb-3">
                          Submit
                      </button>
-                     <button className="btn btn-danger ms-2 mt-3 mb-3" onClick={() => navigateTo("/"+location.state.entity)}>
+                     <button className="btn btn-danger ms-2 mt-3 mb-3" onClick={() => navigateTo("/"+entity)}>
                          Cancel
                      </button>
                  </div>

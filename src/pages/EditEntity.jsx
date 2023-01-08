@@ -55,7 +55,7 @@ const EditEntity = () => {
                 alert('Please fill all the required fields!');
             } else {
                 axios.put('http://localhost:8080/university/api/student', newStudent)
-                    .then(res => {
+                    .then(()=> {
                         alert('Student edited successfully!');
                         navigateTo('/student');
                     })
@@ -77,7 +77,7 @@ const EditEntity = () => {
                 alert('Please fill all the required fields!');
             } else {
                 axios.put('http://localhost:8080/university/api/professor', newProfessor)
-                    .then(res => {
+                    .then(() => {
                         alert('Professor edited successfully!');
                         navigateTo('/professor');
                     })
@@ -95,7 +95,7 @@ const EditEntity = () => {
                 alert('Please fill all the required fields!');
             } else {
                 axios.put('http://localhost:8080/university/api/subject', newSubject)
-                    .then(res => {
+                    .then(() => {
                         alert('Subject Edited successfully!');
                         navigateTo('/subject');
                     })
@@ -112,7 +112,7 @@ const EditEntity = () => {
 
     return (
         <div className="container border border-1 mt-4 mb-4 w-50 text-center">
-            <h1>Add {location.state.entity}</h1>
+            <h1>Edit {location.state.entity}</h1>
             <p className="text-danger">* Required</p>
             <form className="text-start ps-3 pe-3" onSubmit={handleSubmit} >
 
