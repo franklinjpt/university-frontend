@@ -12,6 +12,7 @@ const AddEntity = () => {
     const location = useLocation();
     const dataFields = location.state.data;
     const entity = location.state.entity;
+    const apiUrl = location.state.apiUrl;
     const [data, setData] = useState({
         id: '',
         firstName: '',
@@ -33,110 +34,95 @@ const AddEntity = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (entity === "student") {
-            const newStudent = {
-                id: data.id.trim(),
-                firstName: data.firstName.trim(),
-                lastName: data.lastName.trim(),
-                facultyName: data.facultyName.trim(),
-                address: data.address.trim(),
-                email: data.email.trim(),
-                numberYear: data.numberYear.trim() || 1
-            };
-            if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
-                MySwal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill in all the fields!'
-                })
-            } else {
-                axios.post('http://localhost:8080/university/api/student', newStudent)
-                    .then(() => {
-                        MySwal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Student added successfully!'
-                        }).then(() => {
-                            navigateTo('/student');
-                        })
+        switch (entity) {
+            case 'student':
+                if(data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in all the fields!',
                     })
-                    .catch(error => {
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Student already exists!'
-                        })
-                    });
-            }
-        } else if (entity === "professor") {
-            const newProfessor = {
-                id: data.id.trim(),
-                firstName: data.firstName.trim(),
-                lastName: data.lastName.trim(),
-                facultyName: data.facultyName.trim(),
-                address: data.address.trim(),
-                email: data.email.trim(),
-                cellphone: data.cellphone.trim()
-            };
-            if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
-                MySwal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill in all the fields!'
-                })
-            } else {
-                axios.post('http://localhost:8080/university/api/professor', newProfessor)
-                    .then(() => {
-                        MySwal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Professor added successfully!'
-                        }).then(() => {
-                            navigateTo('/professor');
-                        })
+                }
+                axios.post(apiUrl + 'student', {
+                    id: data.id,
+                    firstName: data.firstName.trim(),
+                    lastName: data.lastName.trim(),
+                    facultyName: data.facultyName.trim(),
+                    address: data.address.trim(),
+                    email: data.email.trim(),
+                    numberYear: data.numberYear || 1,
+                }).then(() => {
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Student added successfully!',
                     })
-                    .catch(error => {
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Professor already exists!'
-                        })
-                    });
-            }
-        } else if (entity === "subject") {
-            const newSubject = {
-                name: data.name,
-                credits: data.credits || 1
-            };
-            if (data.name === '') {
-                MySwal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill in all the fields!'
-                })
-            } else {
-                axios.post('http://localhost:8080/university/api/subject', newSubject)
-                    .then(() => {
-                        MySwal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Subject added successfully!'
-                        }).then(() => {
-                            navigateTo('/subject');
-                        })
+                    navigateTo('/student');
+                }).catch(() => {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
                     })
-                    .catch(error => {
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Subject already exists!'
-                        })
-                    });
-            }
+                })
+                break;
+            case 'professor':
+                if(data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in all the fields!',
+                    })
+                }
+                axios.post(apiUrl + 'professor', {
+                    id: data.id,
+                    firstName: data.firstName.trim(),
+                    lastName: data.lastName.trim(),
+                    facultyName: data.facultyName.trim(),
+                    address: data.address.trim(),
+                    email: data.email.trim(),
+                    cellphone: data.cellphone.trim(),
+                }).then(() => {
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Professor added successfully!',
+                    })
+                    navigateTo('/professor');
+                }).catch(() => {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                })
+                break;
+            case 'subject':
+                if(data.name === '') {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in all the fields!',
+                    })
+                }
+                axios.post(apiUrl + 'subject', {
+                    name: data.name.trim(),
+                    credits: data.credits || 1,
+                }).then(() => {
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Subject added successfully!',
+                    })
+                    navigateTo('/subject');
+                }).catch(() => {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                })
         }
     }
 
-    const requires = ['id', 'firstName', 'lastName', 'facultyName', 'name', 'credits'];
+    const requires = ['id', 'firstName', 'lastName', 'facultyName', 'name'];
     const numbers = ['numberYear', 'credits'];
     return (
 

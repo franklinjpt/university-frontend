@@ -13,7 +13,7 @@ const DisplayTable = (props) => {
     const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
-        axios.get(props.apiUrl)
+        axios.get(props.apiUrl + props.entity)
             .then(res => {
                 setData(res.data);
                 setLoading(false);
@@ -28,8 +28,8 @@ const DisplayTable = (props) => {
     if (error) return <p>Error!</p>;
 
     const deleteClick = (id) => {
-        axios.delete(props.apiUrl + '/' + id)
-            .then(res => {
+        axios.delete(props.apiUrl + props.entity + '/' + id)
+            .then(() => {
                 setData(data.filter(item => item.id !== id));
                 MySwal.fire({
                     icon: 'success',
@@ -37,7 +37,7 @@ const DisplayTable = (props) => {
                     text: 'Entity deleted successfully!'
                 })
             })
-            .catch(error => {
+            .catch(() => {
                 MySwal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -65,9 +65,9 @@ const DisplayTable = (props) => {
                         })}
 
                         <td>
-                            <button className="btn btn-warning me-1" onClick={() => navigateTo('/editentity', {state: {entity: props.entity, data: props.dataFields, id: item.id}})}>Edit</button>
+                            <button className="btn btn-warning me-1" onClick={() => navigateTo('/editentity', {state: {entity: props.entity, data: props.dataFields, id: item.id, apiUrl: props.apiUrl}})}>Edit</button>
                             <button className="btn btn-danger me-1" onClick={() => deleteClick(item.id) }>Delete</button>
-                            <button className="btn btn-primary" onClick={() => navigateTo('/viewentity', {state: {entity: props.entity, data: Object.values(props.dataFields), id: item.id}})}>View</button>
+                            <button className="btn btn-primary" onClick={() => navigateTo('/viewentity', {state: {entity: props.entity, data: Object.values(props.dataFields), id: item.id, apiUrl: props.apiUrl}})}>View</button>
                         </td>
                     </tr>
                 ))}

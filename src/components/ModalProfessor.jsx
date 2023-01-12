@@ -18,12 +18,12 @@ const customStyles = {
 };
 
 const ModalProfessor = (props) => {
-    const {modalIsOpen, closeModal, idEntity, dataSubject, setDataSubject} = props;
+    const {modalIsOpen, closeModal, idEntity, dataSubject, setDataSubject, apiUrl} = props;
     const entity = "professor";
     const [allSubjects, setAllSubjects] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/university/api/subject')
+        axios.get(apiUrl + 'subject')
             .then(res => {
                 setAllSubjects(res.data);
             })
@@ -58,15 +58,15 @@ const ModalProfessor = (props) => {
                             <td>{subject.credits}</td>
                             <td>
                                 <button className="btn btn-success" onClick={() => {
-                                    axios.post('http://localhost:8080/university/api/'+ entity + '/addSubject/' + idEntity + '/' + subject.id)
-                                        .then(res => {
+                                    axios.post(apiUrl + entity + '/subject/' + idEntity + '/' + subject.id)
+                                        .then(() => {
                                             MySwal.fire({
                                                 icon: 'success',
                                                 title: 'Subject added correctly',
                                                 showConfirmButton: false,
                                                 timer: 1500
                                             }).then(() => {
-                                                axios.get('http://localhost:8080/university/api/subject/' + entity + '/' + idEntity)
+                                                axios.get(apiUrl + 'subject/' + entity + '/' + idEntity)
                                                     .then(res => {
                                                         setDataSubject(res.data);
                                                     })
@@ -81,8 +81,8 @@ const ModalProfessor = (props) => {
                                         });
                                 }}>Add</button>
                                 <button className="btn btn-danger ms-1" onClick={() => {
-                                    axios.delete('http://localhost:8080/university/api/'+ entity + '/removeSubject/' + idEntity + '/' + subject.id)
-                                        .then(res => {
+                                    axios.delete(apiUrl + entity + '/subject/' + idEntity + '/' + subject.id)
+                                        .then(() => {
                                             MySwal.fire({
                                                 icon: 'success',
                                                 title: 'Subject deleted correctly',

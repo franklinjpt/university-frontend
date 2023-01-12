@@ -11,6 +11,7 @@ const EditEntity = () => {
     const navigateTo = useNavigate();
     const location = useLocation();
     const dataFields = location.state.data;
+    const apiUrl = location.state.apiUrl;
 
     const [data, setData] = useState({
         id: '',
@@ -26,7 +27,7 @@ const EditEntity = () => {
     });
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/university/api/' + location.state.entity + '/' + location.state.id)
+        axios.get(apiUrl + location.state.entity + '/' + location.state.id)
             .then(res => {
                 setData(res.data);
             })
@@ -44,107 +45,92 @@ const EditEntity = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (location.state.entity === "student") {
-            const newStudent = {
-                id: data.id.trim(),
-                firstName: data.firstName.trim(),
-                lastName: data.lastName.trim(),
-                facultyName: data.facultyName.trim(),
-                address: data.address.trim(),
-                email: data.email.trim(),
-                numberYear: data.numberYear || 1
-            };
-            if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
-                MySwal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill in all the fields!'
-                })
-            } else {
-                axios.put('http://localhost:8080/university/api/student', newStudent)
-                    .then(()=> {
-                        MySwal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Student updated successfully!'
-                        }).then(() => {
-                            navigateTo('/student');
-                        });
+        switch (location.state.entity) {
+            case 'student':
+                if(data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in all the fields!',
                     })
-                    .catch(error => {
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!'
-                        })
-                    });
-            }
-        } else if (location.state.entity === "professor") {
-            const newProfessor = {
-                id: data.id.trim(),
-                firstName: data.firstName.trim(),
-                lastName: data.lastName.trim(),
-                facultyName: data.facultyName.trim(),
-                address: data.address.trim(),
-                email: data.email.trim(),
-                cellphone: data.cellphone.trim()
-            };
-            if (data.id === '' || data.firstName === '' || data.lastName === '' || data.facultyName === '') {
-                MySwal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill in all the fields!'
-                })
-            } else {
-                axios.put('http://localhost:8080/university/api/professor', newProfessor)
-                    .then(() => {
-                        MySwal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Professor updated successfully!'
-                        }).then(() => {
-                            navigateTo('/professor');
-                        });
+                }
+                axios.put(apiUrl + 'student/', {
+                    id: data.id,
+                    firstName: data.firstName.trim(),
+                    lastName: data.lastName.trim(),
+                    facultyName: data.facultyName.trim(),
+                    address: data.address.trim(),
+                    email: data.email.trim(),
+                    numberYear: data.numberYear || 1,
+                }).then(() => {
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Student updated successfully!',
+                    }).then(() => {
+                        navigateTo('/student');
                     })
-                    .catch(error => {
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!'
-                        })
-                    });
-            }
-        } else if (location.state.entity === "subject") {
-            const newSubject = {
-                id: data.id,
-                name: data.name.trim(),
-                credits: data.credits || 1
-            };
-            if (data.name === '') {
-                MySwal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill in all the fields!'
-                })
-            } else {
-                axios.put('http://localhost:8080/university/api/subject', newSubject)
-                    .then(() => {
-                        MySwal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Subject updated successfully!'
-                        }).then(() => {
-                            navigateTo('/subject');
-                        });
+                }).catch(() => {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
                     })
-                    .catch(error => {
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!'
-                        })
-                    });
-            }
+                })
+                break;
+            case 'professor':
+                if(data.firstName === '' || data.lastName === '' || data.facultyName === '') {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in all the fields!',
+                    })
+                }
+                axios.put(apiUrl + 'professor/', {
+                    id: data.id,
+                    firstName: data.firstName.trim(),
+                    lastName: data.lastName.trim(),
+                    facultyName: data.facultyName.trim(),
+                    address: data.address.trim(),
+                    email: data.email.trim(),
+                    cellphone: data.cellphone.trim(),
+                }).then(() => {
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Professor updated successfully!',
+                    }).then(() => {
+                        navigateTo('/professor');
+                    })
+                }).catch(() => {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                })
+                break;
+            case 'subject':
+                if(data.name === '') {
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in all the fields!',
+                    })
+                }
+                axios.put(apiUrl + 'subject/', {
+                    id: data.id,
+                    name: data.name.trim(),
+                    credits: data.credits || 1,
+                }).then(() => {
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Subject updated successfully!',
+                    }).then(() => {
+                        navigateTo('/subject');
+                    })
+                })
         }
     }
 

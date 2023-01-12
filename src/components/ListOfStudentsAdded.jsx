@@ -2,12 +2,12 @@ import * as React from 'react';
 import axios from "axios";
 
 const ListOfStudentsAdded = (props) => {
-    const {openModal, idEntity} = props;
+    const {idEntity, apiUrl} = props;
 
     const [data, setData] = React.useState({});
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/university/api/student/subject/' + idEntity)
+        axios.get(apiUrl + 'student/subject/' + idEntity)
             .then(res => {
                 setData(res.data);
             })

@@ -13,20 +13,21 @@ import ViewEntity from "./pages/ViewEntity.jsx";
 
 function App() {
 
+    const apiUrl = "https://university-api-franklinjpt-dev.apps.rhoam-ds-prod.xe9u.p1.openshiftapps.com/university/api/";
 
   return (
     <div className="App" >
         <BrowserRouter >
             <NavBar />
             <Routes>
-                <Route exact path="/" element={<Home/>}/>
+                <Route exact path="/" element={<Home apiUrl={apiUrl}/>}/>
                 <Route path="*" element={<h1>404</h1>}/>
-                <Route exact path="/student" element={<Student/>}/>
-                <Route exact path="/professor" element={<Professor/>}/>
-                <Route exact path="/subject" element={<Subject/>}/>
-                <Route exact path="/addentity" element={<AddEntity/>}/>
-                <Route exact path="/editentity/" element={<EditEntity/>}/>
-                <Route exact path="/viewentity" element={<ViewEntity/>}/>
+                <Route exact path="/student" element={<Student apiUrl={apiUrl}/>}/>
+                <Route exact path="/professor" element={<Professor apiUrl={apiUrl}/>}/>
+                <Route exact path="/subject" element={<Subject apiUrl={apiUrl}/>}/>
+                <Route exact path="/addentity" element={<AddEntity apiUrl={apiUrl}/>}/>
+                <Route exact path="/editentity" element={<EditEntity apiUrl={apiUrl}/>}/>
+                <Route exact path="/viewentity" element={<ViewEntity apiUrl={apiUrl}/>}/>
             </Routes>
         </BrowserRouter>
     </div>

@@ -6,16 +6,13 @@ import ListOfSubjectsAdded from "../components/ListOfSubjectsAdded.jsx";
 import ListOfStudentsAdded from "../components/ListOfStudentsAdded.jsx";
 import ListOfProfessorsAdded from "../components/ListOfProfessorsAdded.jsx";
 import axios from "axios";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-
-const MySwal = withReactContent(Swal)
 
 const ViewEntity = () => {
     const location = useLocation();
     const fields = location.state.data;
     const entity = location.state.entity;
     const idEntity = location.state.id;
+    const apiUrl = location.state.apiUrl;
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -32,14 +29,14 @@ const ViewEntity = () => {
     const [dataSubject, setDataSubject] = React.useState({});
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/university/api/' + entity + '/' + idEntity)
+        axios.get(apiUrl + entity + '/' + idEntity)
             .then(res => {
                 setData(res.data);
             })
             .catch(error => {
                 console.log(error);
             });
-        axios.get('http://localhost:8080/university/api/subject/' + entity + '/' + idEntity)
+        axios.get(apiUrl + entity + '/' + idEntity)
             .then(res => {
                 setDataSubject(res.data);
             })
@@ -65,11 +62,12 @@ const ViewEntity = () => {
                     <ModalStudent modalIsOpen={modalIsOpen} closeModal={closeModal}
                                   calculateCredits={calculateCredits} idEntity={idEntity}
                                   dataSubject={dataSubject} setDataSubject={setDataSubject}
+                                  apiUrl={apiUrl}
                     />
                 ) : entity === "professor" ? (
                     <ModalProfessor modalIsOpen={modalIsOpen} closeModal={closeModal}
                                     idEntity={idEntity} dataSubject={dataSubject}
-                                    setDataSubject={setDataSubject}
+                                    setDataSubject={setDataSubject} apiUrl={apiUrl}
                     />
                 ) : null}
             </div>
@@ -90,8 +88,8 @@ const ViewEntity = () => {
                 <ListOfSubjectsAdded openModal={openModal} calculateCredits={calculateCredits} dataSubject={dataSubject}/>
             ) : (
                 <div>
-                    <ListOfStudentsAdded openModal={openModal} idEntity={idEntity}/>
-                    <ListOfProfessorsAdded openModal={openModal} idEntity={idEntity}/>
+                    <ListOfStudentsAdded idEntity={idEntity} apiUrl={apiUrl}/>
+                    <ListOfProfessorsAdded  idEntity={idEntity} apiUrl={apiUrl}/>
                 </div>
             )}
         </div>);

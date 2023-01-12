@@ -6,7 +6,7 @@ export default function Add(props) {
     return (
         <div className="text-start me-3 mt-3 mb-3">
             <button type="button" className="btn btn-primary"
-            onClick={() => navigate("/addentity", {state: {entity: props.entity, data: props.data}})}>
+            onClick={() => navigate("/addentity", {state: {entity: props.entity, data: props.data, apiUrl: props.apiUrl}})}>
                 Add {props.entity}
             </button>
         </div>
